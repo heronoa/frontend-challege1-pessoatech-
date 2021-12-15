@@ -1,15 +1,19 @@
-import tMUrl from './thinking-man.webp';
-import lUrl from './linkedin1.svg';
-import iUrl from './instagram1.svg';
-import tUrl from './twitter1.svg';
+import sunUrl from './sun.webp' 
+import moonUrl from './moon.webp' 
+import linkedinUrl from './linkedin1.svg';
+import instagramUrl from './instagram1.svg';
+import twitterUrl from './twitter1.svg';
+import thinkingManUrl from './thinking-man.webp';
 import './App.css';
-import { useState } from 'react';
+import { CSSProperties, useState } from 'react';
 
 function App() {
 // STATES
 const [name, setName] = useState('');
 const [phone, setPhone] = useState('');
-const [warning, setWarning] = useState('')
+const [warning, setWarning] = useState('');
+const [menuIsOpen, setMenuIsOpen] = useState(false);
+const [darkMode, setDarkMode] = useState(false);
 
 // FUNCTIONS
 const handleNameInput = (e: any) => {
@@ -27,12 +31,65 @@ const handleCallToAction = (e:any) => {
     (document.querySelector('input[type="text"]') as HTMLInputElement).focus();
   }
 }
+const handleMobileMenu = () => {
+  if (!menuIsOpen) {
+    setMenuIsOpen(true);
+    document.querySelector('header')?.classList.add('mobileMenuIsOpen')
+  } else {
+    setMenuIsOpen(false);
+    document.querySelector('header')?.classList.remove('mobileMenuIsOpen')
+  }
+}
+
+const handleDarkMode = () => {
+  if(!darkMode) {
+    setDarkMode(true);
+    let cssVariables:any = document.querySelector(':root');
+    if(document.querySelector('.dark-mode-button img') !== null)  {
+      (document.querySelector('.dark-mode-button img') as HTMLImageElement).src = sunUrl;
+    }
+    if(cssVariables !== null) {      
+      cssVariables.style.setProperty('--body-bg-color','#1a1a1a');
+      cssVariables.style.setProperty('--header-gradient-color1','#D92223');
+      cssVariables.style.setProperty('--header-gradient-color2','#000000');
+      cssVariables.style.setProperty('--dark-mode-border-color','#000000');
+      cssVariables.style.setProperty('--main-button-bg-color','#a12828');
+      cssVariables.style.setProperty('--section-text-color','#FFFFFF');
+      cssVariables.style.setProperty('--aside-text-color','#FFFFFF');
+      cssVariables.style.setProperty('--form-submit-bg-color','#0b7e61');
+      cssVariables.style.setProperty('--polygon-color','#2D2D2D');
+    }
+      
+  } else {
+    setDarkMode(false);
+    let cssVariables:any = document.querySelector(':root');
+  if(document.querySelector('.dark-mode-button img') !== null)  {
+    (document.querySelector('.dark-mode-button img') as HTMLImageElement).src = moonUrl;
+    if(cssVariables !== null) {      
+      cssVariables.style.setProperty('--body-bg-color','#FBFBFB');
+      cssVariables.style.setProperty('--default-text-color','#000000');
+      cssVariables.style.setProperty('--header-gradient-color1','#EE5253');
+      cssVariables.style.setProperty('--header-gradient-color2','#D92223');
+      cssVariables.style.setProperty('--dark-mode-border-color','#FFFFFF');
+      cssVariables.style.setProperty('--main-button-bg-color','#EE5253');
+      cssVariables.style.setProperty('--section-text-color','#000000');
+      cssVariables.style.setProperty('--aside-text-color','#000000');
+      cssVariables.style.setProperty('--form-submit-bg-color','#10AC84');
+      cssVariables.style.setProperty('--polygon-color','#EAEAEA');
+    
+    }
+  }
+  }
+}
+
 const handleSubmit = async () => {
 
   let url = "https://jsonplaceholder.typicode.com/users";
     let response = await fetch(url);
     let res = await response.json();
     console.log(res);
+
+
 
 // REQUISITION
   if(name && phone) {
@@ -56,7 +113,7 @@ const handleSubmit = async () => {
       setWarning("Contato enviado! Obrigado pela Confiança!")
       setTimeout(()=>{
         document.querySelector('aside .warning')?.classList.remove('green')
-      }, 2000)
+      }, 1000)
     } else {
       document.querySelector('aside .warning')?.classList.add('red')
       setWarning("Ocorreu algum erro...")
@@ -69,7 +126,7 @@ const handleSubmit = async () => {
     setWarning("Opa! Faltou algum campo!")
     setTimeout(()=>{
       document.querySelector('aside .warning')?.classList.remove('red')
-    }, 900)
+    }, 1000)
   }
 
 }
@@ -80,31 +137,91 @@ const handleSubmit = async () => {
         <div className="logo">
           MeuFreela
         </div>
-        <div>
+        <div className="dark-mode" onClick={handleDarkMode}>
+          <div className="dark-mode-button">
+            <img src={sunUrl} width="32px" height="32px"></img>
+          </div>
         </div>
         <div className="contacts">
-          <img 
-          src={lUrl} 
-          width="32px"
-          height="32px"
-          alt="Logo do Linkedin clique para ver nosso perfil"
-          >
-          </img>
-          <img 
-          src={iUrl} 
-          width="32px"
-          height="32px"
-          alt="Logo do instagram clique para ver nosso perfil"
-          >
-          </img>
-          <img 
-          src={tUrl}
-          width="32px"
-          height="32px" 
-          alt="Logo do twitter clique para ver nosso perfil"
-          >
-          </img>
+          <div>
+            <img 
+            src={linkedinUrl} 
+            width="32px"
+            height="32px"
+            alt="Logo do Linkedin clique para ver nosso perfil"
+            >
+            </img>
+          </div>
+
+          <div>
+            <img 
+            src={instagramUrl} 
+            width="32px"
+            height="32px"
+            alt="Logo do instagram clique para ver nosso perfil"
+            >
+            </img>
+          </div>
+
+          <div>
+            <img 
+            src={twitterUrl}
+            width="32px"
+            height="32px" 
+            alt="Logo do twitter clique para ver nosso perfil"
+            >
+            </img>
+          </div>
+          
         </div>
+        <div className="mobile-menu">
+          <ul>
+            <li>
+            <div className="contacts">
+              <div>
+              <img 
+              src={linkedinUrl} 
+              width="32px"
+              height="32px"
+              alt="Logo do Linkedin clique para ver nosso perfil"
+              >
+              </img>
+            </div>
+            <div>
+              <img 
+              src={instagramUrl} 
+              width="32px"
+              height="32px"
+              alt="Logo do instagram clique para ver nosso perfil"
+              >
+              </img>
+            </div>
+
+            <div>
+              <img 
+              src={twitterUrl}
+              width="32px"
+              height="32px" 
+              alt="Logo do twitter clique para ver nosso perfil"
+              >
+              </img>
+            </div>
+          </div>
+            </li>
+            <li>
+              <div className="dark-mode" onClick={handleDarkMode}>
+                <div className="dark-mode-button">
+                <img src={sunUrl} width="32px" height="32px"></img>
+                </div>
+              </div>
+            </li>
+          </ul>
+        </div>
+            <div className="mobile-menu-button" onClick={handleMobileMenu}>
+              <div></div>
+              <div></div>
+              <div></div>
+            </div>
       </header>
       <main>
         <div className="bg-photo">
@@ -140,7 +257,7 @@ const handleSubmit = async () => {
           <div className="aboutus-right">
             <img 
             width="500px" height="500px"
-            src={tMUrl}
+            src={thinkingManUrl}
             alt="Homem com a mão no queixo pensando" />
           </div>
         </div>
@@ -179,7 +296,7 @@ const handleSubmit = async () => {
             Peça uma reunião
           </button>
         </fieldset>
-          <span className="warning">{warning}</span>
+        <span className="warning">{warning}</span>
       </aside>
       <footer>
         <span>
