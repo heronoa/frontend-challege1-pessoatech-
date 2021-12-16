@@ -7,7 +7,7 @@ set -e
 npm run build
 
 # navigate into the build output directory
-cd docs
+cd dist
 
 git init
 git add -A
